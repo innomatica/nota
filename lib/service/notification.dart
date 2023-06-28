@@ -3,7 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/timezone.dart';
+// import 'package:timezone/timezone.dart';
 
 import '../shared/constants.dart';
 
@@ -33,12 +33,13 @@ class NotificationService {
     return _instance;
   }
   final _notification = FlutterLocalNotificationsPlugin();
-  late final Location _currentLocation;
 
   Future initialize() async {
     // initialize timezone database
     tz.initializeTimeZones();
+    // get current timezone name
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+    // set my location in the database
     tz.setLocalLocation(tz.getLocation(timeZoneName));
 
     await _notification.initialize(
@@ -110,7 +111,7 @@ class NotificationService {
       id,
       title,
       body,
-      tz.TZDateTime.from(when, _currentLocation),
+      tz.TZDateTime.from(when, tz.local),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           appId,
