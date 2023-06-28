@@ -2,7 +2,7 @@
 import '../model/notatag.dart';
 import '../model/notaalarm.dart';
 
-const urlPrivacyPolicy = 'https://innomatica.github.io/notad/privacy/';
+const urlPrivacyPolicy = 'https://innomatica.github.io/nota/privacy/';
 const urlDisclaimer = 'https://innomatica.github.io/nota/disclaimer/';
 const urlInstruction = 'https://innomatica.github.io/nota/manual/';
 // icon

@@ -2,7 +2,7 @@
 const appId = 'com.innomatic.notaapp';
 const appName = 'Nota';
 const appDescription = 'Checklist App';
-const appVersion = '1.2.0+12';
+const appVersion = '1.2.1+13';
 const emailDeveloper = 'nuntium.ubique@gmail.com';
 const urlGooglePlay = 'https://play.google.com/store/apps/details?id=$appId';
 const urlAppStore = null;
