@@ -92,7 +92,8 @@ class _AlarmSettingState extends State<AlarmSetting> {
                         ),
                         content: OutlinedButton(
                           onPressed: () {
-                            AppSettings.openNotificationSettings();
+                            AppSettings.openAppSettings(
+                                type: AppSettingsType.notification);
                             Navigator.of(context).pop();
                           },
                           child: const Text('Open App Settings'),
