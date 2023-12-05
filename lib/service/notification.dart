@@ -62,7 +62,7 @@ class NotificationService {
     return await _notification
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()!
-        .requestPermission();
+        .requestNotificationsPermission();
   }
 
   Future cancelNotification(int id) async {
