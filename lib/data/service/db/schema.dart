@@ -7,13 +7,15 @@ const createNotaItems = """CREATE TABLE items (
   content TEXT,
   completed INTEGER NOT NULL,
   alarm TEXT,
-  tagIds TEXT
+  tag_ids TEXT NOT NULL,
+  created_at TEXT NOT NULL
 );""";
 const createNotaTags = '''CREATE TABLE tags (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   alarm TEXT,
-  color INTEGER
+  color INTEGER NOT NULL,
+  type TEXT NOT NULL
 );''';
 
 const createTablesV1 = [createNotaItems, createNotaTags];

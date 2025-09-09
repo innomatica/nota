@@ -144,6 +144,12 @@ class _ItemViewState extends State<ItemView> {
                           decoration: InputDecoration(
                             labelText: 'Title',
                             hintText: 'broccoli, carrots, onions',
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.close_rounded),
+                              onPressed: () {
+                                _titleController.text = "";
+                              },
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {

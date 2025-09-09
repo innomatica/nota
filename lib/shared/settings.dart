@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' show Colors;
 
 import '../models/notaalarm.dart' show NotaAlarm;
 import '../models/notaitem.dart' show NotaItem;
-import '../models/notatag.dart' show NotaTag;
+import '../models/notatag.dart' show NotaTag, TagType;
 
 const laterTimes = {
   // '5 min': Duration(minutes: 5),
@@ -20,26 +20,19 @@ final sampleTags = <NotaTag>[
     title: 'Grocery Shopping',
     color: NotaTag.tagColors[5],
     alarm: NotaAlarm.fromNew(),
-  ),
-  NotaTag(
-    title: 'Saturday CleanUp',
-    color: NotaTag.tagColors[3],
-    alarm: NotaAlarm.fromNew(),
+    type: TagType.permanent,
   ),
   NotaTag(
     title: 'Moonshot Ideas',
     color: NotaTag.tagColors[8],
     alarm: NotaAlarm.fromNew(),
+    type: TagType.temporary,
   ),
   NotaTag(
     title: 'Weekly Workout',
     color: NotaTag.tagColors[1],
     alarm: NotaAlarm.fromNew(),
-  ),
-  NotaTag(
-    title: 'Meeting Deadlines',
-    color: NotaTag.tagColors[11],
-    alarm: NotaAlarm.fromNew(),
+    type: TagType.sequencial,
   ),
 ];
 
@@ -47,6 +40,7 @@ final defaultTag = NotaTag(
   id: 0,
   title: "All Items",
   color: Colors.white.toARGB32(),
+  type: TagType.none,
 );
 
 final sampleItems = <NotaItem>[
@@ -55,6 +49,7 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
   NotaItem(
     title: '2. Tap me to see details',
@@ -62,6 +57,7 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
   NotaItem(
     title: '3. Tap check button to toggle state',
@@ -72,6 +68,7 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
   NotaItem(
     title: '4. Tap and hold to delete me',
@@ -82,6 +79,7 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
   NotaItem(
     title: '5. How to attach tags',
@@ -92,6 +90,7 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
   NotaItem(
     title: '6. How to set up an alarm',
@@ -101,6 +100,7 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
   NotaItem(
     title: '7. Create items via Share',
@@ -111,5 +111,6 @@ final sampleItems = <NotaItem>[
     completed: false,
     alarm: NotaAlarm.fromNew(),
     tagIds: [],
+    createdAt: DateTime.now(),
   ),
 ];

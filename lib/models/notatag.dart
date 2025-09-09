@@ -5,27 +5,45 @@ import 'package:flutter/material.dart';
 import 'notaalarm.dart';
 import 'notaobject.dart';
 
+enum TagType { temporary, permanent, sequencial, none }
+
 class NotaTag extends NotaObject {
   int? id;
   int color;
+  TagType type;
 
-  NotaTag({required super.title, super.alarm, this.id, required this.color});
+  NotaTag({
+    required super.title,
+    super.alarm,
+    this.id,
+    required this.color,
+    required this.type,
+  });
 
   factory NotaTag.fromDbMap(Map<String, Object?> map) {
     return NotaTag(
-      id: map['id'] as int,
+      id: map['id'] as int, // primary key
       title: map['title'] as String,
       color: map['color'] as int,
       alarm: NotaAlarm.fromDbObject(map['alarm']),
+      type: TagType.values.firstWhere(
+        (e) => e.name == map['type'],
+        orElse: () => TagType.temporary,
+      ),
     );
   }
 
-  factory NotaTag.fromNew({int? id, String title = "New Tag"}) {
+  factory NotaTag.fromNew({
+    int? id,
+    String title = "New Tag",
+    TagType type = TagType.temporary,
+  }) {
     return NotaTag(
       id: id,
       title: title,
       color: _getRandomColor(),
       alarm: NotaAlarm.fromNew(),
+      type: type,
     );
   }
 
@@ -35,6 +53,7 @@ class NotaTag extends NotaObject {
       'title': title,
       'color': color,
       'alarm': alarm?.toDbObject(),
+      'type': type.name,
     };
   }
 
@@ -45,6 +64,7 @@ class NotaTag extends NotaObject {
       'title': title,
       'color': color,
       'alarm': alarm,
+      'type': type.name,
     }.toString();
   }
 

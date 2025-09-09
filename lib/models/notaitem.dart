@@ -6,6 +6,7 @@ class NotaItem extends NotaObject {
   String? content;
   bool completed;
   List<int> tagIds;
+  DateTime createdAt;
 
   NotaItem({
     required super.title,
@@ -14,21 +15,24 @@ class NotaItem extends NotaObject {
     this.content,
     required this.completed,
     required this.tagIds,
+    required this.createdAt,
   });
 
   factory NotaItem.fromDbMap(Map<String, Object?> map) {
     return NotaItem(
-      id: map['id'] as int,
+      id: map['id'] as int, // primary key not null
       title: map['title'] as String,
-      content: map['content'] != null ? map['content'] as String : null,
+      content: map['content'] as String?,
       completed: (map['completed'] as int) == 1,
       alarm: NotaAlarm.fromDbObject(map['alarm']),
-      tagIds: map['tagIds'] != null && map['tagIds'] != ''
-          ? (map['tagIds'] as String)
+      tagIds: (map['tag_ids'] as String).isNotEmpty
+          ? (map['tag_ids'] as String)
                 .split(',')
                 .map((e) => int.parse(e))
                 .toList()
           : [],
+      createdAt:
+          DateTime.tryParse(map['created_at'] as String) ?? DateTime.now(),
     );
   }
 
@@ -38,6 +42,7 @@ class NotaItem extends NotaObject {
       completed: false,
       alarm: NotaAlarm.fromNew(),
       tagIds: [],
+      createdAt: DateTime.now(),
     );
   }
 
@@ -48,6 +53,7 @@ class NotaItem extends NotaObject {
       completed: completed,
       alarm: alarm,
       tagIds: tagIds,
+      createdAt: createdAt,
     );
   }
 
@@ -58,7 +64,8 @@ class NotaItem extends NotaObject {
       'content': content,
       'completed': completed ? 1 : 0,
       'alarm': alarm?.toDbObject(),
-      'tagIds': tagIds.join(','),
+      'tag_ids': tagIds.join(','),
+      'created_at': createdAt.toIso8601String(),
     };
   }
 
@@ -71,6 +78,7 @@ class NotaItem extends NotaObject {
       'completed': completed,
       'tagIds': tagIds,
       'alarm': alarm,
+      'createAt': createdAt.toIso8601String(),
     }.toString();
   }
 }
