@@ -44,10 +44,9 @@ class HomeViewModel extends ChangeNotifier {
     }
     _currentTagId = _prefs?.getInt('currentTagId') ?? 0;
     // validate currentTagId
-    if (_currentTagId! >= _tags.length) {
+    if (_currentTagId! > _tags.length || _currentTagId! < 0) {
       _currentTagId = 0;
     }
-    _logger.fine('currentTag:$_currentTagId');
     _logger.fine('tags:$_tags');
 
     notifyListeners();
@@ -67,6 +66,7 @@ class HomeViewModel extends ChangeNotifier {
         title: "New Item",
         completed: false,
         tagIds: _currentTagId == null ? [] : [_currentTagId!],
+        createdAt: DateTime.now(),
       ),
     );
     load();
