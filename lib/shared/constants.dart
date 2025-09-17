@@ -1,7 +1,7 @@
 // app info
 const appName = 'Nota';
 const appId = 'com.innomatic.notaapp';
-const appVersion = '1.0.0+1';
+const appVersion = '1.0.1+2';
 
 const developerWebsite = 'https://innomatic.ca';
 const sourceRepository = 'https://github.com/innomatica/nota';
