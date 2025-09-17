@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' show Colors;
 
 import '../models/notaalarm.dart' show NotaAlarm;
 import '../models/notaitem.dart' show NotaItem;
-import '../models/notatag.dart' show NotaTag, TagType;
+import '../models/notatag.dart' show NotaTag, ItemLayout;
 
 const laterTimes = {
   // '5 min': Duration(minutes: 5),
@@ -20,19 +20,19 @@ final sampleTags = <NotaTag>[
     title: 'Grocery Shopping',
     color: NotaTag.tagColors[5],
     alarm: NotaAlarm.fromNew(),
-    type: TagType.permanent,
+    layout: ItemLayout.menu,
   ),
   NotaTag(
     title: 'Moonshot Ideas',
     color: NotaTag.tagColors[8],
     alarm: NotaAlarm.fromNew(),
-    type: TagType.temporary,
+    layout: ItemLayout.todo,
   ),
   NotaTag(
     title: 'Weekly Workout',
     color: NotaTag.tagColors[1],
     alarm: NotaAlarm.fromNew(),
-    type: TagType.sequencial,
+    layout: ItemLayout.recipe,
   ),
 ];
 
@@ -40,7 +40,7 @@ final defaultTag = NotaTag(
   id: 0,
   title: "All Items",
   color: Colors.white.toARGB32(),
-  type: TagType.none,
+  layout: ItemLayout.todo,
 );
 
 final sampleItems = <NotaItem>[

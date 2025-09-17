@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'notaalarm.dart';
 import 'notaobject.dart';
 
-enum TagType { temporary, permanent, sequencial, none }
+enum ItemLayout { todo, menu, recipe }
 
 class NotaTag extends NotaObject {
   int? id;
   int color;
-  TagType type;
+  ItemLayout layout;
 
   NotaTag({
     required super.title,
     super.alarm,
     this.id,
     required this.color,
-    required this.type,
+    required this.layout,
   });
 
   factory NotaTag.fromDbMap(Map<String, Object?> map) {
@@ -26,9 +26,9 @@ class NotaTag extends NotaObject {
       title: map['title'] as String,
       color: map['color'] as int,
       alarm: NotaAlarm.fromDbObject(map['alarm']),
-      type: TagType.values.firstWhere(
-        (e) => e.name == map['type'],
-        orElse: () => TagType.temporary,
+      layout: ItemLayout.values.firstWhere(
+        (e) => e.name == map['layout'],
+        orElse: () => ItemLayout.todo,
       ),
     );
   }
@@ -36,14 +36,14 @@ class NotaTag extends NotaObject {
   factory NotaTag.fromNew({
     int? id,
     String title = "New Tag",
-    TagType type = TagType.temporary,
+    ItemLayout layout = ItemLayout.todo,
   }) {
     return NotaTag(
       id: id,
       title: title,
       color: _getRandomColor(),
       alarm: NotaAlarm.fromNew(),
-      type: type,
+      layout: layout,
     );
   }
 
@@ -53,7 +53,7 @@ class NotaTag extends NotaObject {
       'title': title,
       'color': color,
       'alarm': alarm?.toDbObject(),
-      'type': type.name,
+      'layout': layout.name,
     };
   }
 
@@ -64,7 +64,7 @@ class NotaTag extends NotaObject {
       'title': title,
       'color': color,
       'alarm': alarm,
-      'type': type.name,
+      'layout': layout.name,
     }.toString();
   }
 

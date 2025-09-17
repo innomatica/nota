@@ -15,7 +15,7 @@ const createNotaTags = '''CREATE TABLE tags (
   title TEXT NOT NULL,
   alarm TEXT,
   color INTEGER NOT NULL,
-  type TEXT NOT NULL
+  layout TEXT NOT NULL
 );''';
 
 const createTablesV1 = [createNotaItems, createNotaTags];

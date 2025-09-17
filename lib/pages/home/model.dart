@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/repository/nota.dart' show NotaRepository;
 import '../../models/notaitem.dart' show NotaItem;
-import '../../models/notatag.dart' show NotaTag;
+import '../../models/notatag.dart' show NotaTag, ItemLayout;
 
 class HomeViewModel extends ChangeNotifier {
   final NotaRepository repo;
@@ -60,16 +60,18 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  Future createNewItem() async {
-    await repo.createItem(
-      NotaItem(
-        title: "New Item",
-        completed: false,
-        tagIds: _currentTagId == null ? [] : [_currentTagId!],
-        createdAt: DateTime.now(),
-      ),
-    );
-    load();
+  Future createNewItem(String? title) async {
+    if (title != null && title.isNotEmpty) {
+      await repo.createItem(
+        NotaItem(
+          title: title,
+          completed: false,
+          tagIds: _currentTagId == null ? [] : [_currentTagId!],
+          createdAt: DateTime.now(),
+        ),
+      );
+      load();
+    }
   }
 
   Future deleteItem(int? itemId) async {

@@ -27,7 +27,7 @@ class SqliteService {
   Future<void> execute(String sql, [List<Object?>? args]) async {
     try {
       final db = await getDatabase();
-      return await db.execute(sql, args);
+      await db.execute(sql, args);
     } on Exception catch (e) {
       _log.info(e.toString());
       rethrow;

@@ -111,7 +111,28 @@ class HomeView extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.edit_outlined),
             onPressed: () {
-              model.createNewItem();
+              // model.createNewItem();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  String title = "";
+                  return AlertDialog(
+                    content: TextField(
+                      onChanged: (value) => title = value,
+                      decoration: InputDecoration(
+                        labelText: "Title",
+                        hintText: "enter title for new item",
+                        suffix: IconButton(
+                          icon: Icon(Icons.check),
+                          onPressed: () {
+                            Navigator.of(context).pop(title);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ).then((value) => model.createNewItem(value));
             },
           ),
           floatingActionButtonLocation:

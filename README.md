@@ -7,6 +7,6 @@ Checklist
 * implement alarm feature
 * connect with nubis
 * tag has type 
-  - simple checklist
-  - repeated checklist
-  - procedural checklist
+  - simple checklist (todo)
+  - repeated checklist (catalog)
+  - procedural checklist (recipe)

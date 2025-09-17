@@ -6,7 +6,6 @@ import 'model.dart';
 
 class ItemView extends StatefulWidget {
   final ItemViewModel model;
-  // const ItemView({super.key, required this.model});
   final int itemId;
   const ItemView({super.key, required this.model, required this.itemId});
 
@@ -36,6 +35,9 @@ class _ItemViewState extends State<ItemView> {
     await showDialog(
       context: context,
       builder: (context) {
+        final labelStyle = TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+        );
         return AlertDialog(
           contentPadding: EdgeInsets.only(
             left: 24,
@@ -43,45 +45,78 @@ class _ItemViewState extends State<ItemView> {
             bottom: 24,
             right: 8,
           ),
+          title: Text('Tag Settings'),
           content: StatefulBuilder(
             builder: (context, setState) {
               return SingleChildScrollView(
                 child: Column(
-                  spacing: 8.0,
+                  spacing: 16.0,
                   children: [
                     ...widget.model.tags.map((t) {
                       return Row(
-                        spacing: 8.0,
                         children: [
-                          // color selector
-                          DropdownButton<int>(
-                            value: t.color,
-                            icon: SizedBox(),
-                            underline: SizedBox(),
-                            items: NotaTag.tagColors.map((c) {
-                              return DropdownMenuItem<int>(
-                                value: c,
-                                child: Icon(
-                                  Icons.label_rounded,
-                                  color: Color(c),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              if (value != null) t.color = value;
-                              setState(() {});
-                            },
-                          ),
-                          // title
                           Expanded(
-                            child: TextFormField(
-                              initialValue: t.title,
-                              onChanged: (value) => t.title = value,
+                            child: Column(
+                              children: [
+                                // title
+                                TextFormField(
+                                  initialValue: t.title,
+                                  decoration: InputDecoration(
+                                    labelText: "title",
+                                    labelStyle: labelStyle,
+                                  ),
+                                  onChanged: (value) => t.title = value,
+                                ),
+                                Row(
+                                  spacing: 8,
+                                  children: [
+                                    // color
+                                    Text('color', style: labelStyle),
+                                    DropdownButton<int>(
+                                      value: t.color,
+                                      icon: SizedBox(),
+                                      underline: SizedBox(),
+                                      items: NotaTag.tagColors.map((c) {
+                                        return DropdownMenuItem<int>(
+                                          value: c,
+                                          child: Icon(
+                                            Icons.label_rounded,
+                                            color: Color(c),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        if (value != null) t.color = value;
+                                        setState(() {});
+                                      },
+                                    ),
+                                    Expanded(child: SizedBox()),
+                                    // layout
+                                    Text('layout', style: labelStyle),
+                                    DropdownButton(
+                                      value: t.layout,
+                                      items: ItemLayout.values.map((e) {
+                                        return DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e.name),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        if (value != null) t.layout = value;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                           // delete
                           IconButton(
-                            icon: Icon(Icons.delete_rounded),
+                            icon: Icon(
+                              Icons.delete_rounded,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
                             padding: EdgeInsets.all(0),
                             onPressed: () {
                               widget.model.deleteTag(t.id!);
@@ -93,23 +128,16 @@ class _ItemViewState extends State<ItemView> {
                     }),
                     // add new tag
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        Expanded(child: SizedBox(width: 300)),
                         IconButton(
                           icon: Icon(Icons.add),
-                          onPressed: () {
-                            widget.model.createTag();
+                          onPressed: () async {
+                            await widget.model.createTag();
                             setState(() {});
                           },
                         ),
                       ],
-                    ),
-                    FilledButton.tonal(
-                      onPressed: () async {
-                        await widget.model.updateTags();
-                        if (context.mounted) context.pop();
-                      },
-                      child: Text('update tags'),
                     ),
                   ],
                 ),
@@ -118,7 +146,9 @@ class _ItemViewState extends State<ItemView> {
           ),
         );
       },
-    );
+    ).then((value) async {
+      await widget.model.updateTags();
+    });
     widget.model.load(widget.model.item!.id);
   }
 

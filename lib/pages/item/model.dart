@@ -45,8 +45,11 @@ class ItemViewModel extends ChangeNotifier {
     return await repo.deleteItem(_item!.id!);
   }
 
-  void createTag() {
-    _tags.add(NotaTag.fromNew());
+  Future createTag() async {
+    final newTag = NotaTag.fromNew();
+    final id = await repo.createTag(newTag);
+    newTag.id = id;
+    _tags.add(newTag);
   }
 
   void deleteTag(int tagId) {

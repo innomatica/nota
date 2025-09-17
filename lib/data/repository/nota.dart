@@ -9,14 +9,13 @@ class NotaRepository {
   NotaRepository({required SqliteService db}) : _db = db;
 
   // nota item
-  Future<bool> createItem(NotaItem item) async {
+  Future<int> createItem(NotaItem item) async {
     final data = item.toDbMap();
     final keys = data.keys.join(',');
     final vals = data.values.toList();
     final args = List.filled(vals.length, "?").join(',');
-    final count = await _db.insert("""INSERT INTO items ($keys)
+    return await _db.insert("""INSERT INTO items ($keys)
       VALUES ($args)""", vals);
-    return count == 1;
   }
 
   Future<List<NotaItem>> getItems() async {
@@ -65,14 +64,13 @@ class NotaRepository {
 
   // nota tag
 
-  Future<bool> createTag(NotaTag tag) async {
+  Future<int> createTag(NotaTag tag) async {
     final map = tag.toDbMap();
     final keys = map.keys.join(',');
     final vals = map.values.toList();
     final args = List.filled(vals.length, "?").join(',');
-    final count = await _db.insert("""INSERT INTO tags ($keys)
+    return await _db.insert("""INSERT INTO tags ($keys)
       VALUES ($args)""", vals);
-    return count == 1;
   }
 
   Future<List<NotaTag>> getTags() async {
