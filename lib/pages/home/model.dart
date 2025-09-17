@@ -4,7 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/repository/nota.dart' show NotaRepository;
 import '../../models/notaitem.dart' show NotaItem;
-import '../../models/notatag.dart' show NotaTag, ItemLayout;
+import '../../models/notatag.dart' show NotaTag;
+import '../../shared/settings.dart' show defaultTag;
 
 class HomeViewModel extends ChangeNotifier {
   final NotaRepository repo;
@@ -15,15 +16,15 @@ class HomeViewModel extends ChangeNotifier {
   SharedPreferences? _prefs;
   final _items = <NotaItem>[];
   final _tags = <NotaTag>[];
-  int? _currentTagId;
+  NotaTag _currentTag = defaultTag;
   // ignore: unused_field
   final _logger = Logger("HomeViewModel");
 
-  List<NotaItem> get items => _currentTagId == null || _currentTagId == 0
+  List<NotaItem> get items => _currentTag == defaultTag
       ? _items
-      : _items.where((e) => e.tagIds.contains(_currentTagId)).toList();
+      : _items.where((e) => e.tagIds.contains(_currentTag.id)).toList();
   List<NotaTag> get tags => _tags;
-  int? get currentTagId => _currentTagId;
+  NotaTag get currentTag => _currentTag;
 
   Future _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -42,11 +43,16 @@ class HomeViewModel extends ChangeNotifier {
       _items.sort((a, b) => a.title.compareTo(b.title));
       _tags.addAll(await repo.getTags());
     }
-    _currentTagId = _prefs?.getInt('currentTagId') ?? 0;
-    // validate currentTagId
-    if (_currentTagId! > _tags.length || _currentTagId! < 0) {
-      _currentTagId = 0;
+    // add all items tag
+    _tags.add(defaultTag);
+    // retrieve tagId and layout
+    try {
+      final currentTagId = _prefs?.getInt('currentTagId');
+      _currentTag = _tags.firstWhere((e) => e.id == currentTagId);
+    } catch (e) {
+      _currentTag = defaultTag;
     }
+
     _logger.fine('tags:$_tags');
 
     notifyListeners();
@@ -54,9 +60,13 @@ class HomeViewModel extends ChangeNotifier {
 
   Future setCurrentTagId(int? value) async {
     if (value != null) {
-      _currentTagId = value;
-      await _prefs?.setInt('currentTagId', value);
-      notifyListeners();
+      try {
+        _currentTag = _tags.firstWhere((e) => e.id == value);
+        await _prefs?.setInt('currentTagId', value);
+        notifyListeners();
+      } catch (e) {
+        _currentTag = defaultTag;
+      }
     }
   }
 
@@ -66,7 +76,7 @@ class HomeViewModel extends ChangeNotifier {
         NotaItem(
           title: title,
           completed: false,
-          tagIds: _currentTagId == null ? [] : [_currentTagId!],
+          tagIds: _currentTag == defaultTag ? [] : [_currentTag.id!],
           createdAt: DateTime.now(),
         ),
       );
